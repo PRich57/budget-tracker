@@ -69,19 +69,22 @@ def add_transaction():
     print("Transaction added successfully.")
 
 
-def view_transactions():
+# def view_transactions():
     
 
 
 
-def update_transaction():
+# def update_transaction():
 
 
 
 
-def delete_transaction():
+# def delete_transaction():
 
 
 
-def generate_report():
+# def generate_report():
     
+
+if __name__ == "__main__":
+    main()
