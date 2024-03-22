@@ -32,7 +32,7 @@ def display_menu():
     3 - Update Transaction
     4 - Delete Transaction
     5 - Generate Report
-    Q/q - Quit
+    Q - Quit
     """)
 
 
