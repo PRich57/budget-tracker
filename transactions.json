@@ -1,0 +1,20 @@
+[
+    {
+        "date": "2024-03-22",
+        "description": "Steam - Spiritfall",
+        "type": "expense",
+        "amount": 41.01
+    },
+    {
+        "date": "2024-03-22",
+        "description": "Venmo",
+        "type": "income",
+        "amount": 1000.0
+    },
+    {
+        "date": "2024-03-22",
+        "description": "Rent",
+        "type": "expense",
+        "amount": 900.0
+    }
+]
