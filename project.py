@@ -57,11 +57,13 @@ def save_transactions(transactions):
 def add_transaction():
     # Add a new transaction after gathering input from the user
     transactions = load_transactions()
+    new_id = 1 if not transactions else transactions[-1]['id'] + 1
     date = get_valid_date()
     description = input("Enter the transaction description: ")
     type = get_type()
     amount = get_valid_amount()
     transaction = {
+        'id': new_id,
         'date': date,
         'description': description,
         'type': type,
@@ -125,6 +127,7 @@ def view_transactions():
             color = Fore.RED if transaction['type'] == 'expense' else Fore.GREEN
             # Apply color to entire row
             row = [
+                color + f"{transaction['id']}" + Fore.RESET,
                 color + transaction['date'] + Fore.RESET,
                 color + transaction['description'] + Fore.RESET,
                 color + transaction['type'] + Fore.RESET,
@@ -133,7 +136,7 @@ def view_transactions():
             # Append list of transaction details
             table_data.append(row)
         # Print with tabulate
-        print("\n" + tabulate(table_data, headers=['Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
+        print(Fore.RESET + "\n" + tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
     else:
         print(Fore.RED + "No transactions found.")
 

@@ -1,32 +1,16 @@
 [
     {
+        "id": 1,
         "date": "2024-03-22",
-        "description": "Steam - Spiritfall",
+        "description": "Steam",
         "type": "expense",
-        "amount": 41.01
+        "amount": 41.02
     },
     {
-        "date": "2024-03-22",
+        "id": 2,
+        "date": "2024-03-03",
         "description": "Venmo",
         "type": "income",
         "amount": 1000.0
-    },
-    {
-        "date": "2024-03-22",
-        "description": "Rent",
-        "type": "expense",
-        "amount": 900.0
-    },
-    {
-        "date": "2024-03-03",
-        "description": "Car Payment",
-        "type": "expense",
-        "amount": 308.25
-    },
-    {
-        "date": "2024-03-01",
-        "description": "Internet",
-        "type": "expense",
-        "amount": 56.78
     }
 ]
