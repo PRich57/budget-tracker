@@ -166,15 +166,7 @@ def generate_report():
     net_color = Fore.GREEN if net > 0 else Fore.RED
     # Apply coloring to 'Net'
     report_data[2] = [net_color + 'Net' + Fore.CYAN, net_color + f"${net:.2f}" + Fore.CYAN]
-
     print(tabulate(report_data, tablefmt="grid"))
-
-    # print(Fore.GREEN + f"\nTotal Income: ${income:.2f}")
-    # print(Fore.RED + f"Total Expense: ${expense:.2f}")
-    # if net > 0:
-    #     print(Fore.GREEN + f"Net: ${net:.2f}")
-    # else:
-    #     print(Fore.RED + f"Net: ${net:.2f}")
 
 
 if __name__ == "__main__":
