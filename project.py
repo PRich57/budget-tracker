@@ -127,16 +127,16 @@ def view_transactions():
             color = Fore.RED if transaction['type'] == 'expense' else Fore.GREEN
             # Apply color to entire row
             row = [
-                color + f"{transaction['id']}" + Fore.RESET,
-                color + transaction['date'] + Fore.RESET,
-                color + transaction['description'] + Fore.RESET,
-                color + transaction['type'] + Fore.RESET,
-                color + '${:,.2f}'.format(transaction['amount']) + Fore.RESET
+                color + f"{transaction['id']}" + Fore.CYAN,
+                color + transaction['date'] + Fore.CYAN,
+                color + transaction['description'] + Fore.CYAN,
+                color + transaction['type'] + Fore.CYAN,
+                color + '${:,.2f}'.format(transaction['amount']) + Fore.CYAN
             ]
             # Append list of transaction details
             table_data.append(row)
         # Print with tabulate
-        print(Fore.RESET + "\n" + tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
+        print(Fore.CYAN + "\n" + tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
     else:
         print(Fore.RED + "No transactions found.")
 
@@ -155,12 +155,26 @@ def generate_report():
     income = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'income')
     expense = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'expense')
     net = income - expense
-    print(Fore.GREEN + f"\nTotal Income: ${income:.2f}")
-    print(Fore.RED + f"Total Expense: ${expense:.2f}")
-    if net > 0:
-        print(Fore.GREEN + f"Net: ${net:.2f}")
-    else:
-        print(Fore.RED + f"Net: ${net:.2f}")
+
+    report_data = [
+        [Fore.GREEN + 'Total Income' + Fore.CYAN, Fore.GREEN + f"${income:.2f}" + Fore.CYAN],
+        [Fore.RED + 'Total Expense' + Fore.CYAN, Fore.RED + f"${expense:.2f}" + Fore.CYAN],
+        ['Net', f"${net:.2f}"]
+    ]
+
+    # Conditional coloring for 'Net' based on its value
+    net_color = Fore.GREEN if net > 0 else Fore.RED
+    # Apply coloring to 'Net'
+    report_data[2] = [net_color + 'Net' + Fore.CYAN, net_color + f"${net:.2f}" + Fore.CYAN]
+
+    print(tabulate(report_data, tablefmt="grid"))
+
+    # print(Fore.GREEN + f"\nTotal Income: ${income:.2f}")
+    # print(Fore.RED + f"Total Expense: ${expense:.2f}")
+    # if net > 0:
+    #     print(Fore.GREEN + f"Net: ${net:.2f}")
+    # else:
+    #     print(Fore.RED + f"Net: ${net:.2f}")
 
 
 if __name__ == "__main__":
