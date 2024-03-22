@@ -1,6 +1,7 @@
 import json
 from colorama import Fore
 from datetime import datetime
+from tabulate import tabulate
 
 def main():
     # Main loop to display the menu and handle user input
@@ -56,10 +57,10 @@ def save_transactions(transactions):
 def add_transaction():
     # Add a new transaction after gathering input from the user
     transactions = load_transactions()
-    date = input("\nEnter the date (YYYY-MM-DD): ")
+    date = get_valid_date()
     description = input("Enter the transaction description: ")
     type = get_type()
-    amount = float(input("Amount: "))
+    amount = get_valid_amount()
     transaction = {
         'date': date,
         'description': description,
@@ -75,7 +76,7 @@ def get_type():
     # Type is important to validate for the report, so another menu is displayed
     while True:
         display_type_menu()
-        choice = input("Enter your choice: ").strip()
+        choice = input(Fore.CYAN + "Enter your choice: ").strip()
         if choice == '1':
             return 'income'
         elif choice == '2':
@@ -86,21 +87,55 @@ def get_type():
 
 def display_type_menu():
     # Menu for the type of transaction
-    print("""
+    print(Fore.CYAN + """
     1 - Income
     2 - Expense
     """)
 
 
+def get_valid_amount():
+    # Ensure the validity of the user provided amount
+    while True:
+        try:
+            amount = float(input(Fore.CYAN + "Amount: "))
+            return amount
+        except ValueError:
+            print(Fore.RED + "\nInvalid amount. Please enter a numeric value.\n")
+
+
+def get_valid_date():
+    # Ensure the date provided is in the proper format
+    while True:
+        date_input = input(Fore.CYAN + "\nEnter the date (YYYY-MM-DD): ")
+        try:
+            valid_date = datetime.strptime(date_input, '%Y-%m-%d')
+            return valid_date.strftime('%Y-%m-%d')
+        except ValueError:
+            print(Fore.RED + "\nInvalid date format. Please ender a date in the format YYYY-MM-DD.")
+
+
 def view_transactions():
     # Display all transactions
     transactions = load_transactions()
-    for transaction in transactions:
-        if transaction['type'] == 'expense':
-            print(Fore.RED + f"\n{transaction['date']} - {transaction['description']} - {transaction['type']} - {transaction['amount']}")
-        else:
-            print(Fore.GREEN + f"\n{transaction['date']} - {transaction['description']} - {transaction['type']} - {transaction['amount']}")
-
+    # Check if there are any transactions to display
+    if transactions:
+        table_data = []
+        for transaction in transactions:
+            # Color code based on transaction type
+            color = Fore.RED if transaction['type'] == 'expense' else Fore.GREEN
+            # Apply color to entire row
+            row = [
+                color + transaction['date'] + Fore.RESET,
+                color + transaction['description'] + Fore.RESET,
+                color + transaction['type'] + Fore.RESET,
+                color + '${:,.2f}'.format(transaction['amount']) + Fore.RESET
+            ]
+            # Append list of transaction details
+            table_data.append(row)
+        # Print with tabulate
+        print("\n" + tabulate(table_data, headers=['Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
+    else:
+        print(Fore.RED + "No transactions found.")
 
 
 def update_transaction():
