@@ -1,36 +1,7 @@
 [
     {
-        "id": 1,
-        "date": "2024-03-22",
-        "description": "Steam",
-        "type": "expense",
-        "amount": 41.02
-    },
-    {
-        "id": 2,
-        "date": "2024-03-03",
-        "description": "Venmo",
-        "type": "income",
-        "amount": 1000.0
-    },
-    {
-        "id": 3,
-        "date": "2024-03-22",
-        "description": "Venmo",
-        "type": "expense",
-        "amount": 1500.0
-    },
-    {
-        "id": 4,
-        "date": "2024-03-22",
-        "description": "Venmo",
-        "type": "income",
-        "amount": 1000.0
-    },
-    {
-        "id": 5,
-        "date": "2024-03-01",
-        "description": "Venmo",
+        "date": "2024-03-23",
+        "description": "Paycheck",
         "type": "income",
         "amount": 1000.0
     }

@@ -57,19 +57,21 @@ def save_transactions(transactions):
 def add_transaction():
     # Add a new transaction after gathering input from the user
     transactions = load_transactions()
-    new_id = 1 if not transactions else transactions[-1]['id'] + 1
+    # new_id = 1 if not transactions else transactions[-1]['id'] + 1
     date = get_valid_date()
     description = input("Enter the transaction description: ")
     type = get_type()
     amount = get_valid_amount()
     transaction = {
-        'id': new_id,
+        # 'id': new_id,
         'date': date,
         'description': description,
         'type': type,
         'amount': amount
     }
     transactions.append(transaction)
+    # Sort chronologically
+    transactions.sort(key=lambda x: x['date'])
     save_transactions(transactions)
     print(Fore.GREEN + "\nTransaction added successfully.")
 
@@ -122,12 +124,12 @@ def view_transactions():
     # Check if there are any transactions to display
     if transactions:
         table_data = []
-        for transaction in transactions:
+        for i, transaction in enumerate(transactions, start=1):
             # Color code based on transaction type
             color = Fore.RED if transaction['type'] == 'expense' else Fore.GREEN
             # Apply color to entire row
             row = [
-                color + f"{transaction['id']}" + Fore.CYAN,
+                color + f"{i}" + Fore.CYAN,
                 color + transaction['date'] + Fore.CYAN,
                 color + transaction['description'] + Fore.CYAN,
                 color + transaction['type'] + Fore.CYAN,
@@ -146,7 +148,37 @@ def update_transaction():
 
 
 def delete_transaction():
-    print(Fore.GREEN + "\nDelete transaction placeholder")
+    while True:
+        # Call view_transactions to show user the organized data
+        view_transactions()
+
+        transactions = load_transactions()
+        if transactions:
+            # Prompt user for ID of the transaction they wish to delete
+            user_input = input(Fore.CYAN + "\nEnter the ID of the transaction you wish to delete, or 'Q' to return to the main menu: ").strip().lower()
+            # Provide user with a way to return to main menu if they no longer want to delete
+            if user_input == 'q':
+                print(Fore.YELLOW + "\nDeletion cancelled. Returning to the main menu.")
+                break
+
+            try:
+                transaction_id_to_delete = int(user_input)
+                # Validate
+                if 1 <= transaction_id_to_delete <= len(transactions):
+                    # Delete the transaction, subtracting 1 due to IDs starting at 1 instead of 0
+                    del transactions[transaction_id_to_delete - 1]
+                    save_transactions(transactions)
+                    print(Fore.GREEN + "\nTransaction deleted successfully.")
+                    break
+                else:
+                    # Invalid ID error message
+                    print(Fore.RED + "\nInvalid ID. Please try again.")
+            except ValueError:
+                # User entered non-integer value
+                print(Fore.RED + "\nInvalid input. Please enter a numeric ID.")
+        else:
+            # No transactions to delete
+            print(Fore.RED + "\nNo transactions to delete.")
 
 
 def generate_report():
