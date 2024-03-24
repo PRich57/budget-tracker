@@ -19,7 +19,7 @@ def main():
         elif choice == '5':
             generate_report()
         elif choice.lower() == 'q':
-            print(Fore.GREEN + "\nExiting the budget tracker.")
+            print(Fore.YELLOW + "\nExiting the budget tracker.")
             break
         else:
             print(Fore.RED + "\nInvalid choice. Please choose again.")
@@ -117,15 +117,18 @@ def get_valid_amount():
             print(Fore.RED + "\nInvalid amount. Please enter a numeric value.\n")
 
 
-def get_valid_date():
+def get_valid_date(date_input=None):
     # Ensure the date provided is in the proper format
     while True:
-        date_input = input(Fore.CYAN + "\nEnter the date (YYYY-MM-DD): ")
+        if date_input is None:
+            date_input = input(Fore.CYAN + "\nEnter the date (YYYY-MM-DD): ").strip()
         try:
             valid_date = datetime.strptime(date_input, '%Y-%m-%d')
             return valid_date.strftime('%Y-%m-%d')
         except ValueError:
             print(Fore.RED + "\nInvalid date format. Please ender a date in the format YYYY-MM-DD.")
+            # Reset to prompt again
+            date_input = None
 
 
 def view_transactions():
