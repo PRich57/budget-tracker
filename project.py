@@ -121,9 +121,9 @@ def get_valid_date():
 def view_transactions():
     # Display all transactions
     transactions = load_transactions()
+    table_data = []
     # Check if there are any transactions to display
     if transactions:
-        table_data = []
         for i, transaction in enumerate(transactions, start=1):
             # Color code based on transaction type
             color = Fore.RED if transaction['type'] == 'expense' else Fore.GREEN
@@ -140,11 +140,59 @@ def view_transactions():
         # Print with tabulate
         print(Fore.CYAN + "\n" + tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
     else:
-        print(Fore.RED + "No transactions found.")
+        # print(Fore.RED + "\nNo transactions found.")
+        print(tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
 
 
 def update_transaction():
-    print(Fore.GREEN + "\nUpdate transaction placeholder")
+    # print(Fore.GREEN + "\nUpdate transaction placeholder")
+    view_transactions()
+
+    transactions = load_transactions()
+    if transactions:
+        transaction_id_to_update = input(Fore.CYAN + "\nEnter the ID of the transaction you wish to update, or 'Q' to cancel: ").strip().lower()
+
+        if transaction_id_to_update.lower() == 'q':
+            print(Fore.YELLOW + "\nUpdate cancelled. Returning to main menu.")
+            return
+        
+        if not transaction_id_to_update.isdigit() or not 1 <= int(transaction_id_to_update) <= len(transactions):
+            print(Fore.RED + "\nInvalid transaction ID.")
+            return
+        
+        # Convert ID to an index
+        transaction_id_to_update = int(transaction_id_to_update) - 1
+        transaction_to_update = transactions[transaction_id_to_update]
+
+        # Show current values of the transaction
+        print(Fore.CYAN + "\nCurrent transaction details:")
+        print(tabulate([[key, value] for key, value in transaction_to_update.items()], headers=['Field', 'Current Value'], tablefmt="grid"))
+
+        # Get updated values from the user
+        new_date = input(f"\nEnter new date (YYYY-MM-DD) or press enter to keep ({transaction_to_update['date']}): ")
+        new_description = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ")
+        new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ")
+        new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ")
+    
+        # Update the transaction, only if a new value was provided
+        if new_date:
+            transaction_to_update['date'] = new_date
+        if new_description:
+            transaction_to_update['description'] = new_description
+        if new_type in ['income', 'expense']:
+            transaction_to_update['type'] = new_type
+        if new_amount_str:
+            try:
+                new_amount = float(new_amount_str)
+                transaction_to_update['amount'] = new_amount
+            except ValueError:
+                print(Fore.RED + "\nInvalid amount. Keeping the original amount.")
+
+        # Save the updated transaction list
+        save_transactions(transactions)
+        print(Fore.GREEN + "\nTransaction updated successfully.")
+    else:
+        print(Fore.RED + "\nNo transactions to update.")
 
 
 def delete_transaction():
@@ -155,7 +203,7 @@ def delete_transaction():
         transactions = load_transactions()
         if transactions:
             # Prompt user for ID of the transaction they wish to delete
-            user_input = input(Fore.CYAN + "\nEnter the ID of the transaction you wish to delete, or 'Q' to return to the main menu: ").strip().lower()
+            user_input = input(Fore.CYAN + "\nEnter the ID of the transaction you wish to delete, or 'Q' to cancel: ").strip().lower()
             # Provide user with a way to return to main menu if they no longer want to delete
             if user_input == 'q':
                 print(Fore.YELLOW + "\nDeletion cancelled. Returning to the main menu.")
@@ -179,6 +227,7 @@ def delete_transaction():
         else:
             # No transactions to delete
             print(Fore.RED + "\nNo transactions to delete.")
+            break
 
 
 def generate_report():
