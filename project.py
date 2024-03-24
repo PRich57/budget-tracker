@@ -207,20 +207,13 @@ def update_transaction():
         if new_description:
             transaction_to_update['description'] = new_description
 
-        new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ")
+        new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ").strip().lower()
         if new_type:
             transaction_to_update['type'] = get_type(new_type)
 
-        new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ")
-    
-        if new_description:
-            transaction_to_update['description'] = new_description
+        new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ").strip()
         if new_amount_str:
-            try:
-                new_amount = float(new_amount_str)
-                transaction_to_update['amount'] = new_amount
-            except ValueError:
-                print(Fore.RED + "\nInvalid amount. Keeping the original amount.")
+            transaction_to_update['amount'] = get_valid_amount(new_amount_str)
 
         # Save the updated transaction list
         save_transactions(transactions)
