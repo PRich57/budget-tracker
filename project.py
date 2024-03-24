@@ -76,17 +76,25 @@ def add_transaction():
     print(Fore.GREEN + "\nTransaction added successfully.")
 
 
-def get_type():
+def get_type(type_input=None):
+    # Declare variable and assign list of valid types
+    valid_types = ['income', 'expense']
     # Type is important to validate for the report, so another menu is displayed
     while True:
-        display_type_menu()
-        choice = input(Fore.CYAN + "Enter your choice: ").strip()
-        if choice == '1':
-            return 'income'
-        elif choice == '2':
-            return 'expense'
-        else:
-            print(Fore.RED + "\nInvalid choice. Please choose again.")
+        if type_input is None or type_input not in valid_types:
+            display_type_menu()
+            choice = input(Fore.CYAN + "Enter your choice: ").strip()
+
+            if choice in valid_types:
+                return choice
+            elif choice == '1':
+                return 'income'
+            elif choice == '2':
+                return 'expense'
+            else:
+                print(Fore.RED + "\nInvalid choice. Please choose again.")
+                # Reset type_input to prompt again
+                type_input = None
 
 
 def display_type_menu():
@@ -172,6 +180,9 @@ def update_transaction():
         new_date = input(f"\nEnter new date (YYYY-MM-DD) or press enter to keep ({transaction_to_update['date']}): ")
         new_description = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ")
         new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ")
+        if new_type:
+            transaction_to_update['type'] = get_type[new_type]
+
         new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ")
     
         # Update the transaction, only if a new value was provided
@@ -179,8 +190,6 @@ def update_transaction():
             transaction_to_update['date'] = new_date
         if new_description:
             transaction_to_update['description'] = new_description
-        if new_type in ['income', 'expense']:
-            transaction_to_update['type'] = new_type
         if new_amount_str:
             try:
                 new_amount = float(new_amount_str)
