@@ -3,6 +3,10 @@ from colorama import Fore
 from datetime import datetime
 from tabulate import tabulate
 
+# I'll modularize into more practical file structure after
+# submitting in the required format for the final project of CS50P
+# I'm adding potential filenames above each function so I can easily move them when the time comes
+
 def main():
     # Main loop to display the menu and handle user input
     while True:
@@ -25,6 +29,7 @@ def main():
             print(Fore.RED + "\nInvalid choice. Please choose again.")
 
 
+# main_menu.py
 def display_menu():
     # Display the user menu
     print(Fore.CYAN + """
@@ -39,6 +44,7 @@ def display_menu():
     """)
 
 
+# helpers.py
 def load_transactions():
     # Load transactions from a JSON file, return an empty list if file doesn't exist
     try:
@@ -48,12 +54,14 @@ def load_transactions():
         return []
     
 
+# helpers.py
 def save_transactions(transactions):
     # Save transactions to a JSON file
     with open('transactions.json', 'w') as file:
         json.dump(transactions, file, indent=4)
 
 
+# main_menu.py
 def add_transaction():
     # Add a new transaction after gathering input from the user
     transactions = load_transactions()
@@ -76,6 +84,21 @@ def add_transaction():
     print(Fore.GREEN + "\nTransaction added successfully.")
 
 
+# helpers.py
+def get_valid_date(date_input=None):
+    # Ensure the date provided is in the proper format
+    while True:
+        if date_input is None:
+            date_input = input(Fore.CYAN + "\nEnter the date (YYYY-MM-DD): ").strip()
+        try:
+            valid_date = datetime.strptime(date_input, '%Y-%m-%d')
+            return valid_date.strftime('%Y-%m-%d')
+        except ValueError:
+            print(Fore.RED + "\nInvalid date format. Please ender a date in the format YYYY-MM-DD.")
+            # Reset to prompt again
+            date_input = None
+
+# helpers.py
 def get_type(type_input=None):
     # Declare variable and assign list of valid types
     valid_types = ['income', 'expense']
@@ -99,6 +122,7 @@ def get_type(type_input=None):
             return type_input
 
 
+# helpers.py
 def display_type_menu():
     # Menu for the type of transaction
     print(Fore.CYAN + """
@@ -107,30 +131,22 @@ def display_type_menu():
     """)
 
 
-def get_valid_amount():
+# helpers.py
+def get_valid_amount(amount_input=None):
     # Ensure the validity of the user provided amount
     while True:
+        if amount_input is None:
+            amount_input = input(Fore.CYAN + "Amount: ").strip()
         try:
-            amount = float(input(Fore.CYAN + "Amount: "))
+            amount = float(amount_input)
             return amount
         except ValueError:
             print(Fore.RED + "\nInvalid amount. Please enter a numeric value.\n")
-
-
-def get_valid_date(date_input=None):
-    # Ensure the date provided is in the proper format
-    while True:
-        if date_input is None:
-            date_input = input(Fore.CYAN + "\nEnter the date (YYYY-MM-DD): ").strip()
-        try:
-            valid_date = datetime.strptime(date_input, '%Y-%m-%d')
-            return valid_date.strftime('%Y-%m-%d')
-        except ValueError:
-            print(Fore.RED + "\nInvalid date format. Please ender a date in the format YYYY-MM-DD.")
             # Reset to prompt again
-            date_input = None
+            amount_input = None
 
 
+# main_menu.py
 def view_transactions():
     # Display all transactions
     transactions = load_transactions()
@@ -157,6 +173,7 @@ def view_transactions():
         print(tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
 
 
+# main_menu.py
 def update_transaction():
     # print(Fore.GREEN + "\nUpdate transaction placeholder")
     view_transactions()
@@ -181,18 +198,21 @@ def update_transaction():
         print(Fore.CYAN + "\nCurrent transaction details:")
         print(tabulate([[key, value] for key, value in transaction_to_update.items()], headers=['Field', 'Current Value'], tablefmt="grid"))
 
-        # Get updated values from the user
-        new_date = input(f"\nEnter new date (YYYY-MM-DD) or press enter to keep ({transaction_to_update['date']}): ")
-        new_description = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ")
+        # Prompt user for updated values or keep original
+        new_date = input(f"\nEnter new date (YYYY-MM-DD) or press enter to keep ({transaction_to_update['date']}): ").strip()
+        if new_date:
+            transaction_to_update['date'] = get_valid_date(new_date)
+
+        new_description = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ").strip()
+        if new_description:
+            transaction_to_update['description'] = new_description
+
         new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ")
         if new_type:
             transaction_to_update['type'] = get_type(new_type)
 
         new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ")
     
-        # Update the transaction, only if a new value was provided
-        if new_date:
-            transaction_to_update['date'] = new_date
         if new_description:
             transaction_to_update['description'] = new_description
         if new_amount_str:
@@ -209,6 +229,7 @@ def update_transaction():
         print(Fore.RED + "\nNo transactions to update.")
 
 
+# main_menu.py
 def delete_transaction():
     while True:
         # Call view_transactions to show user the organized data
@@ -244,6 +265,7 @@ def delete_transaction():
             break
 
 
+# main_menu.py
 def generate_report():
     # Generate and display report of total income, expenses, and net amount
     transactions = load_transactions()
