@@ -95,6 +95,8 @@ def get_type(type_input=None):
                 print(Fore.RED + "\nInvalid choice. Please choose again.")
                 # Reset type_input to prompt again
                 type_input = None
+        else:
+            return type_input
 
 
 def display_type_menu():
@@ -181,7 +183,7 @@ def update_transaction():
         new_description = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ")
         new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ")
         if new_type:
-            transaction_to_update['type'] = get_type[new_type]
+            transaction_to_update['type'] = get_type(new_type)
 
         new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ")
     
