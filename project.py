@@ -27,7 +27,6 @@ def main():
             print(Fore.RED + "\nInvalid choice. Please choose again.")
 
 
-
 def display_menu():
     # Display the user menu
     print(Fore.CYAN + """
@@ -42,34 +41,6 @@ def display_menu():
     """)
 
 
-# helpers.py
-# def load_transactions():
-#     # Load transactions from JSON file, return an empty list if file doesn't exist or is corrupted
-#     try:
-#         with open('transactions.json', 'r') as file:
-#             return json.load(file)
-#     except FileNotFoundError:
-#         print(Fore.YELLOW + "Transaction file not found. Starting with an empty list.")
-#         return []
-#     except json.JSONDecodeError:
-#         print(Fore.RED + "Transaction file is corrupted. Starting with an empty list.")
-#         return []
-#     except Exception as e:
-#         print(Fore.RED + f"An error occurred while loading transactions: {e}")
-#         return []
-
-
-# helpers.py
-# def save_transactions(transactions):
-#     # Save transactions to a JSON file
-#     try:
-#         with open('transactions.json', 'w') as file:
-#             json.dump(transactions, file, indent=4)
-#     except Exception as e:
-#         print(Fore.RED + f"An error occurred while saving transactions: {e}")
-
-
-# main_menu.py
 def add_transaction():
     # Add a new transaction after gathering input from the user
     transactions = load_transactions()
@@ -92,69 +63,6 @@ def add_transaction():
     print(Fore.GREEN + "\nTransaction added successfully.")
 
 
-# helpers.py
-# def get_valid_date(date_input=None):
-#     # Ensure the date provided is in the proper format
-#     while True:
-#         if date_input is None:
-#             date_input = input(Fore.CYAN + "\nEnter the date (YYYY-MM-DD): ").strip()
-#         try:
-#             valid_date = datetime.strptime(date_input, '%Y-%m-%d')
-#             return valid_date.strftime('%Y-%m-%d')
-#         except ValueError:
-#             print(Fore.RED + "\nInvalid date format. Please ender a date in the format YYYY-MM-DD.")
-#             # Reset to prompt again
-#             date_input = None
-
-# helpers.py
-# def get_type(type_input=None):
-#     # Declare variable and assign list of valid types
-#     valid_types = ['income', 'expense']
-#     # Type is important to validate for the report, so another menu is displayed
-#     while True:
-#         if type_input is None or type_input not in valid_types:
-#             display_type_menu()
-#             choice = input(Fore.CYAN + "Enter your choice: ").strip()
-
-#             if choice in valid_types:
-#                 return choice
-#             elif choice == '1':
-#                 return 'income'
-#             elif choice == '2':
-#                 return 'expense'
-#             else:
-#                 print(Fore.RED + "\nInvalid choice. Please choose again.")
-#                 # Reset type_input to prompt again
-#                 type_input = None
-#         else:
-#             return type_input
-
-
-# helpers.py
-# def display_type_menu():
-#     # Menu for the type of transaction
-#     print(Fore.CYAN + """
-#     1 - Income
-#     2 - Expense
-#     """)
-
-
-# helpers.py
-# def get_valid_amount(amount_input=None):
-#     # Ensure the validity of the user provided amount
-#     while True:
-#         if amount_input is None:
-#             amount_input = input(Fore.CYAN + "Amount: ").strip()
-#         try:
-#             amount = float(amount_input)
-#             return amount
-#         except ValueError:
-#             print(Fore.RED + "\nInvalid amount. Please enter a numeric value.\n")
-#             # Reset to prompt again
-#             amount_input = None
-
-
-# main_menu.py
 def view_transactions():
     # Display all transactions
     transactions = load_transactions()
@@ -181,7 +89,6 @@ def view_transactions():
         print(tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
 
 
-# main_menu.py
 def update_transaction():
     view_transactions()
 
@@ -229,7 +136,6 @@ def update_transaction():
         print(Fore.RED + "\nNo transactions to update.")
 
 
-# main_menu.py
 def delete_transaction():
     while True:
         # Call view_transactions to show user the organized data
@@ -265,7 +171,6 @@ def delete_transaction():
             break
 
 
-# main_menu.py
 def generate_report():
     # Generate and display report of total income, expenses, and net amount
     transactions = load_transactions()
