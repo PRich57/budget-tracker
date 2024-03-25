@@ -114,22 +114,23 @@ def update_transaction():
 
         # Prompt user for updated values or keep original
         new_date = input(f"\nEnter new date (YYYY-MM-DD) or press enter to keep ({transaction_to_update['date']}): ").strip()
-        if new_date:
-            transaction_to_update['date'] = get_valid_date(new_date)
+        # Validate and update transaction
+        transaction_to_update['date'] = get_valid_date(new_date) if new_date else transaction_to_update['date']
 
         new_description = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ").strip()
-        if new_description:
-            transaction_to_update['description'] = new_description
-
+        transaction_to_update['description'] = new_description if new_description else transaction_to_update['description']
+        
+        
         new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ").strip().lower()
-        if new_type:
-            transaction_to_update['type'] = get_valid_type(new_type)
-
+        transaction_to_update['type'] = get_valid_type(new_type) if new_type else transaction_to_update['type']
+        
+        
         new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ").strip()
-        if new_amount_str:
-            transaction_to_update['amount'] = get_valid_amount(new_amount_str)
+        transaction_to_update['amount'] = get_valid_amount(new_amount_str) if new_amount_str else transaction_to_update['amount']
+        
 
-        # Save the updated transaction list
+        # Sort and save the updated transaction list
+        transactions.sort(key=lambda x: x['date'])
         save_transactions(transactions)
         print(Fore.GREEN + "\nTransaction updated successfully.")
     else:

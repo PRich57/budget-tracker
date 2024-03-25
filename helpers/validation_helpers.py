@@ -1,25 +1,37 @@
 import re
+
 from colorama import Fore
 from datetime import datetime
 
-# Need to refactor the date validation for instances of "2024-3-2" or the like
+
 def get_valid_date(date_input=None):
     # Validate or get a date from the user
     while True:
-        if date_input is None or not is_valid_date(date_input):
+        # Prompt for date if date_input is None
+        if date_input is None:
             date_input = input(Fore.CYAN + "\nEnter the date (YYYY-MM-DD): ").strip()
-        else:
+
+        # Check if the date is valid
+        if is_valid_date(date_input):
             return date_input
+        else:
+            # Reset to loop back through until valid date is provided
+            date_input = None
 
 
 def is_valid_date(date_str):
-    # Ensure date string is in proper format
-    try:
-        datetime.strptime(date_str, '%Y-%m-%d')
-        return True
-    except ValueError:
-        print(Fore.RED + "\nInvalid date format. Please enter a date in the format YYYY-MM-DD.")
-        return False
+    # Check if date strin matches strict format
+    if re.match(r'^\d{4}-\d{2}-\d{2}$', date_str):
+        try:
+            # Ensure date string is an actual date
+            datetime.strptime(date_str, '%Y-%m-%d')
+            return True
+        except ValueError:
+            print(Fore.RED + "\nInvalid date. Please enter a valid date in the format YYYY-MM-DD.")
+            return False
+    # Return False if the date doesn't match the correct format
+    print(Fore.RED + "\nInvalid date format. Please enter a date in the format YYYY-MM-DD.")
+    return False
 
 
 def get_valid_type(type_input=None):
@@ -34,6 +46,7 @@ def get_valid_type(type_input=None):
             return type_input
         else:
             print(Fore.RED + "\nInvalid choice. Please choose again.")
+            type_input = None
 
 
 def display_type_menu():
