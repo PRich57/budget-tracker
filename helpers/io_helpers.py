@@ -18,7 +18,6 @@ def load_transactions():
         return []
 
 
-# helpers.py
 def save_transactions(transactions):
     # Save transactions to a JSON file
     try:

@@ -1,14 +1,9 @@
-# import json
 from colorama import Fore
-# from datetime import datetime
 from tabulate import tabulate
 
 from helpers.io_helpers import load_transactions, save_transactions
 from helpers.validation_helpers import get_valid_date, get_valid_type, get_valid_amount
 
-# I'll modularize into more practical file structure after
-# submitting in the required format for the final project of CS50P
-# I'm adding potential filenames above each function so I can easily move them when the time comes
 
 def main():
     # Main loop to display the menu and handle user input
@@ -32,7 +27,7 @@ def main():
             print(Fore.RED + "\nInvalid choice. Please choose again.")
 
 
-# main_menu.py
+
 def display_menu():
     # Display the user menu
     print(Fore.CYAN + """
@@ -188,7 +183,6 @@ def view_transactions():
 
 # main_menu.py
 def update_transaction():
-    # print(Fore.GREEN + "\nUpdate transaction placeholder")
     view_transactions()
 
     transactions = load_transactions()
