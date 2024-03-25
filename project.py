@@ -1,7 +1,10 @@
-import json
+# import json
 from colorama import Fore
-from datetime import datetime
+# from datetime import datetime
 from tabulate import tabulate
+
+from helpers.io_helpers import load_transactions, save_transactions
+from helpers.validation_helpers import get_valid_date, get_valid_type, get_valid_amount
 
 # I'll modularize into more practical file structure after
 # submitting in the required format for the final project of CS50P
@@ -45,30 +48,30 @@ def display_menu():
 
 
 # helpers.py
-def load_transactions():
-    # Load transactions from JSON file, return an empty list if file doesn't exist or is corrupted
-    try:
-        with open('transactions.json', 'r') as file:
-            return json.load(file)
-    except FileNotFoundError:
-        print(Fore.YELLOW + "Transaction file not found. Starting with an empty list.")
-        return []
-    except json.JSONDecodeError:
-        print(Fore.RED + "Transaction file is corrupted. Starting with an empty list.")
-        return []
-    except Exception as e:
-        print(Fore.RED + f"An error occurred while loading transactions: {e}")
-        return []
+# def load_transactions():
+#     # Load transactions from JSON file, return an empty list if file doesn't exist or is corrupted
+#     try:
+#         with open('transactions.json', 'r') as file:
+#             return json.load(file)
+#     except FileNotFoundError:
+#         print(Fore.YELLOW + "Transaction file not found. Starting with an empty list.")
+#         return []
+#     except json.JSONDecodeError:
+#         print(Fore.RED + "Transaction file is corrupted. Starting with an empty list.")
+#         return []
+#     except Exception as e:
+#         print(Fore.RED + f"An error occurred while loading transactions: {e}")
+#         return []
 
 
 # helpers.py
-def save_transactions(transactions):
-    # Save transactions to a JSON file
-    try:
-        with open('transactions.json', 'w') as file:
-            json.dump(transactions, file, indent=4)
-    except Exception as e:
-        print(Fore.RED + f"An error occurred while saving transactions: {e}")
+# def save_transactions(transactions):
+#     # Save transactions to a JSON file
+#     try:
+#         with open('transactions.json', 'w') as file:
+#             json.dump(transactions, file, indent=4)
+#     except Exception as e:
+#         print(Fore.RED + f"An error occurred while saving transactions: {e}")
 
 
 # main_menu.py
@@ -78,7 +81,7 @@ def add_transaction():
     # new_id = 1 if not transactions else transactions[-1]['id'] + 1
     date = get_valid_date()
     description = input("Enter the transaction description: ")
-    type = get_type()
+    type = get_valid_type()
     amount = get_valid_amount()
     transaction = {
         # 'id': new_id,
@@ -95,65 +98,65 @@ def add_transaction():
 
 
 # helpers.py
-def get_valid_date(date_input=None):
-    # Ensure the date provided is in the proper format
-    while True:
-        if date_input is None:
-            date_input = input(Fore.CYAN + "\nEnter the date (YYYY-MM-DD): ").strip()
-        try:
-            valid_date = datetime.strptime(date_input, '%Y-%m-%d')
-            return valid_date.strftime('%Y-%m-%d')
-        except ValueError:
-            print(Fore.RED + "\nInvalid date format. Please ender a date in the format YYYY-MM-DD.")
-            # Reset to prompt again
-            date_input = None
+# def get_valid_date(date_input=None):
+#     # Ensure the date provided is in the proper format
+#     while True:
+#         if date_input is None:
+#             date_input = input(Fore.CYAN + "\nEnter the date (YYYY-MM-DD): ").strip()
+#         try:
+#             valid_date = datetime.strptime(date_input, '%Y-%m-%d')
+#             return valid_date.strftime('%Y-%m-%d')
+#         except ValueError:
+#             print(Fore.RED + "\nInvalid date format. Please ender a date in the format YYYY-MM-DD.")
+#             # Reset to prompt again
+#             date_input = None
 
 # helpers.py
-def get_type(type_input=None):
-    # Declare variable and assign list of valid types
-    valid_types = ['income', 'expense']
-    # Type is important to validate for the report, so another menu is displayed
-    while True:
-        if type_input is None or type_input not in valid_types:
-            display_type_menu()
-            choice = input(Fore.CYAN + "Enter your choice: ").strip()
+# def get_type(type_input=None):
+#     # Declare variable and assign list of valid types
+#     valid_types = ['income', 'expense']
+#     # Type is important to validate for the report, so another menu is displayed
+#     while True:
+#         if type_input is None or type_input not in valid_types:
+#             display_type_menu()
+#             choice = input(Fore.CYAN + "Enter your choice: ").strip()
 
-            if choice in valid_types:
-                return choice
-            elif choice == '1':
-                return 'income'
-            elif choice == '2':
-                return 'expense'
-            else:
-                print(Fore.RED + "\nInvalid choice. Please choose again.")
-                # Reset type_input to prompt again
-                type_input = None
-        else:
-            return type_input
-
-
-# helpers.py
-def display_type_menu():
-    # Menu for the type of transaction
-    print(Fore.CYAN + """
-    1 - Income
-    2 - Expense
-    """)
+#             if choice in valid_types:
+#                 return choice
+#             elif choice == '1':
+#                 return 'income'
+#             elif choice == '2':
+#                 return 'expense'
+#             else:
+#                 print(Fore.RED + "\nInvalid choice. Please choose again.")
+#                 # Reset type_input to prompt again
+#                 type_input = None
+#         else:
+#             return type_input
 
 
 # helpers.py
-def get_valid_amount(amount_input=None):
-    # Ensure the validity of the user provided amount
-    while True:
-        if amount_input is None:
-            amount_input = input(Fore.CYAN + "Amount: ").strip()
-        try:
-            amount = float(amount_input)
-            return amount
-        except ValueError:
-            print(Fore.RED + "\nInvalid amount. Please enter a numeric value.\n")
-            # Reset to prompt again
-            amount_input = None
+# def display_type_menu():
+#     # Menu for the type of transaction
+#     print(Fore.CYAN + """
+#     1 - Income
+#     2 - Expense
+#     """)
+
+
+# helpers.py
+# def get_valid_amount(amount_input=None):
+#     # Ensure the validity of the user provided amount
+#     while True:
+#         if amount_input is None:
+#             amount_input = input(Fore.CYAN + "Amount: ").strip()
+#         try:
+#             amount = float(amount_input)
+#             return amount
+#         except ValueError:
+#             print(Fore.RED + "\nInvalid amount. Please enter a numeric value.\n")
+#             # Reset to prompt again
+#             amount_input = None
 
 
 # main_menu.py
@@ -219,7 +222,7 @@ def update_transaction():
 
         new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ").strip().lower()
         if new_type:
-            transaction_to_update['type'] = get_type(new_type)
+            transaction_to_update['type'] = get_valid_type(new_type)
 
         new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ").strip()
         if new_amount_str:
