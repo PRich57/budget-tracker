@@ -8,13 +8,13 @@ def load_transactions():
         with open('transactions.json', 'r') as file:
             return json.load(file)
     except FileNotFoundError:
-        print(Fore.YELLOW + "Transaction file not found. Starting with an empty list.")
+        print(Fore.YELLOW + "\nTransaction file not found. Starting with an empty list.")
         return []
     except json.JSONDecodeError:
-        print(Fore.RED + "Transaction file is corrupted. Starting with an empty list.")
+        print(Fore.RED + "\nTransaction file is corrupted. Starting with an empty list.")
         return []
     except Exception as e:
-        print(Fore.RED + f"An error occurred while loading transactions: {e}")
+        print(Fore.RED + f"\nAn error occurred while loading transactions: {e}")
         return []
 
 
@@ -24,4 +24,4 @@ def save_transactions(transactions):
         with open('transactions.json', 'w') as file:
             json.dump(transactions, file, indent=4)
     except Exception as e:
-        print(Fore.RED + f"An error occurred while saving transactions: {e}")
+        print(Fore.RED + f"\nAn error occurred while saving transactions: {e}")

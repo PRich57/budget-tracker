@@ -1,7 +1,8 @@
+import re
 from colorama import Fore
 from datetime import datetime
 
-
+# Need to refactor the date validation for instances of "2024-3-2" or the like
 def get_valid_date(date_input=None):
     # Validate or get a date from the user
     while True:
