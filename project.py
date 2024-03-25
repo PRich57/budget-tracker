@@ -120,14 +120,11 @@ def update_transaction():
         new_description = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ").strip()
         transaction_to_update['description'] = new_description if new_description else transaction_to_update['description']
         
-        
         new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ").strip().lower()
         transaction_to_update['type'] = get_valid_type(new_type) if new_type else transaction_to_update['type']
         
-        
         new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ").strip()
         transaction_to_update['amount'] = get_valid_amount(new_amount_str) if new_amount_str else transaction_to_update['amount']
-        
 
         # Sort and save the updated transaction list
         transactions.sort(key=lambda x: x['date'])
