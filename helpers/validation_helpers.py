@@ -20,7 +20,7 @@
 
 
 # def is_valid_date(date_str):
-#     # Check if date strin matches strict format
+#     # Check if date string matches strict format
 #     if re.match(r'^\d{4}-\d{2}-\d{2}$', date_str):
 #         try:
 #             # Ensure date string is an actual date
