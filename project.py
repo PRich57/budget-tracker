@@ -69,6 +69,7 @@ def handle_add_transaction():
 
     add_transaction(transactions, date, description, type, amount)
 
+
 # def add_transaction():
 #     # Add a new transaction after gathering input from the user
 #     transactions = load_transactions()
@@ -117,7 +118,7 @@ def view_transactions():
         print(tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
 
 
-# Refactored for the testing
+# Refactored for testing
 def update_transaction(transactions, transaction_id, new_date=None, new_description=None, new_type=None, new_amount=None):
     if not 0 <= transaction_id < len(transactions):
         print(Fore.RED + "\nInvalid transaction ID.")
@@ -172,6 +173,7 @@ def handle_update_transaction():
 
     update_transaction(transactions, transaction_id, transaction_to_update['date'], transaction_to_update['description'], transaction_to_update['type'], transaction_to_update['amount'])
 
+
 # def update_transaction():
 #     view_transactions()
 
@@ -219,11 +221,9 @@ def handle_update_transaction():
 
 # Refactored for testing
 def delete_transaction(transactions, transaction_id):
-    if not 0 <= transaction_id < len(transactions):
-        print(Fore.RED + "\nInvalid transaction ID.")
-        return False
-
-    del transactions[transaction_id]    
+    # Delete transaction with provided ID from the transactions list
+    del transactions[transaction_id]
+    # Save updated list
     save_transactions(transactions)
     print(Fore.GREEN + "\nTransaction deleted successfully.")
     return True
@@ -236,24 +236,31 @@ def handle_delete_transaction():
         print(Fore.RED + "\nNo transactions to delete.")
         return
 
+    # Call view_transactions to show user the organized data
     view_transactions()
+    # Prompt user for the ID of the transaction they wish to delete
     transaction_id_str = input(Fore.CYAN + "\nEnter the ID of the transaction you wish to delete, or 'q' to cancel: ").strip().lower()
 
+    # Provide user with a way to return to the main menu
     if transaction_id_str.lower() == 'q':
         print(Fore.YELLOW + "\nDeletion cancelled. Returning to the main menu.")
         return
     
+    # Send error message and return to main menu when invalid ID is provided
     if not transaction_id_str.isdigit() or not 1 <= int(transaction_id_str) <= len(transactions):
         print(Fore.RED + "\nInvalid transaction ID.")
         return
     
+    # Convert user provided transaction ID to an int and subtract 1 to align with 0 indexing
     transaction_id = int(transaction_id_str) - 1
+
     # Confirm deletion with user
     confirm = input(Fore.YELLOW + "\nAre you sure you want to delete this transaction? (y/n): ").strip().lower()
     if confirm == 'y':
         delete_transaction(transactions, transaction_id)
     else:
         print(Fore.YELLOW + "\nDeletion cancelled.")
+
 
 # def delete_transaction():
 #     while True:

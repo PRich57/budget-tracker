@@ -1,8 +1,11 @@
+# The below resources were used to help me understand how to test with mock input:
+    # https://docs.python.org/3/library/unittest.mock.html
+    # https://docs.pytest.org/en/6.2.x/fixture.html
+
 import pytest
 
-# from helpers.io_helpers import load_transactions, save_transactions
 from project import add_transaction, update_transaction, delete_transaction
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 
 # Mock transaction
