@@ -1,11 +1,7 @@
-# import re # Remove after graded and moved back to validation_helpers.py
-
 from colorama import Fore
-# from datetime import datetime # Remove after graded and moved back to validation_helpers.py
 from tabulate import tabulate
 
 from helpers.io_helpers import load_transactions, save_transactions
-# Add the below line back in after graded and validation_helpers.py is used again
 from helpers.validation_helpers import get_valid_date, get_valid_type, get_valid_amount
 
 
