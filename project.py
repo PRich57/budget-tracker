@@ -27,6 +27,7 @@ def main():
             print(Fore.RED + "\nInvalid choice. Please choose again.")
 
 
+
 def display_menu():
     # Display the user menu
     print(Fore.CYAN + """
