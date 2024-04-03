@@ -143,30 +143,39 @@ def handle_update_transaction():
         return
 
     view_transactions()
+    # Prompt user for for transaction ID or option to return to main menu
     transaction_id_str = input("\nEnter the ID of the transaction you wish to update, or 'q' to cancel: ").strip().lower()
+    # Return to main menu if user enters 'q'
     if transaction_id_str.lower() == 'q':
         print(Fore.YELLOW + "\nUpdate cancelled. Returning to the main menu.")
         return
     
+    # Validation
     if not transaction_id_str.isdigit() or not 1 <= int(transaction_id_str) <= len(transactions):
         print(Fore.RED + "\nInvalid transaction ID.")
         return
 
+    # Convert to int and account for change of indexing from 1 to 0
     transaction_id = int(transaction_id_str) - 1
     transaction_to_update = transactions[transaction_id]
 
+    # Give option to enter new date or keep existing
     new_date = input(f"\nEnter new date (YYYY-MM-DD) or press enter to keep ({transaction_to_update['date']}): ").strip()
     transaction_to_update['date'] = get_valid_date(new_date) if new_date else transaction_to_update['date']
 
+    # Give option to enter new description or keep existing
     new_description = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ").strip()
     transaction_to_update['description'] = new_description if new_description else transaction_to_update['description']
     
+    # Give option to enter new type or keep existing
     new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ").strip().lower()
     transaction_to_update['type'] = get_valid_type(new_type) if new_type else transaction_to_update['type']
     
+    # Give option to enter new amount or keep existing
     new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ").strip()
     transaction_to_update['amount'] = get_valid_amount(new_amount_str) if new_amount_str else transaction_to_update['amount']
 
+    # Call update_transaction function with provided values, new or old
     update_transaction(transactions, transaction_id, transaction_to_update['date'], transaction_to_update['description'], transaction_to_update['type'], transaction_to_update['amount'])
 
 
