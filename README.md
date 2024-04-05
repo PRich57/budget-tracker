@@ -28,7 +28,7 @@ This application requires Python 3.6 or newer and pip for managing dependencies.
 
 
 
-## Mock Up
+## Mock-Up
 
 
 
