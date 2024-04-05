@@ -34,6 +34,6 @@ This application requires Python 3.6 or newer and pip for managing dependencies.
 
 ## License
 
-N/A
+This project is open-sourced and freely available for personal and educational use.
 
 ## Contributing
