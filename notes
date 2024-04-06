@@ -1,0 +1,10 @@
+* Add testing for each function
+
+* Give option for user to type 'T/t' if the transaction was today instead of having to type out full formatted date
+
+* Modularize file structure
+
+? Consider implementing SQL/Postgres and JS/Vue for further development and practice
+
+? Get one json file to populate for transactions in each month
+    If a new month is entered for a transaction it needs to be added to a file called {month}-{year}-transactions.json

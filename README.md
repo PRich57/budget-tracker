@@ -26,7 +26,12 @@ This application requires Python 3.6 or newer and pip for managing dependencies.
 
 ## Usage
 
+Navigate to the project directory in your terminal and run the application with `python project.py`. Follow the interactive menu to manage your transactions:
 
+##### Main Menu
+
+- The main menu provides options to add, view, update, delete transactions, generate reports, or quit the application.
+- Select an option by entering the corresponding number or letter and follow the prompts.
 
 ## Mock-Up
 
