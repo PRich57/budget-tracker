@@ -33,6 +33,28 @@ Navigate to the project directory in your terminal and run the application with 
 - The main menu provides options to add, view, update, delete transactions, generate reports, or quit the application.
 - Select an option by entering the corresponding number or letter and follow the prompts.
 
+##### Adding a Transaction
+
+- Choose `Add Transaction` from the main menu.
+- Enter the date, description, type (income or expense), and amount for the new transaction.
+
+##### Viewing Transactions
+
+- Select `View Transactions` to display all recorded transactions, including their IDs, dates, descriptions, types, and amounts.
+
+##### Updating a Transaction
+
+- Choose `Update Transaction`, then enter the ID of the transaction you wish to update.
+- Follow the prompts to update the date, description, type, or amount.
+
+##### Deleting a Transaction
+
+- Select `Delete Transaction`, enter the ID of the transaction you wish to delete, and confirm the deletion.
+
+##### Generating Reports
+
+- Choose `Generate Report` to view a summary of total income, expenses, and the net amount.
+
 ## Mock-Up
 
 
