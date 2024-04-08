@@ -57,7 +57,19 @@ Navigate to the project directory in your terminal and run the application with 
 
 ## Mock-Up
 
+Here are some terminal snapshots showing the application in use:
 
+##### Main Menu
+
+![Main Menu](./assets/main_menu.png)
+
+##### Adding a Transaction
+
+![Adding a Transaction](./assets/add_transaction.png)
+
+##### Transaction Report
+
+![Transaction Report](./assets/transaction_report.png)
 
 ## License
 
