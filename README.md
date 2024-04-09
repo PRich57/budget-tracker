@@ -76,3 +76,5 @@ Here are some terminal snapshots showing the application in use:
 This project is open-sourced and freely available for personal and educational use.
 
 ## Contributing
+
+This Budget Tracker App is an open project, and contributions are welcome. If you have suggestions for improvement, bug reports, or would like to contribute code, please feel free to reach out or submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
