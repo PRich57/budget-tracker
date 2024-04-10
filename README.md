@@ -77,4 +77,6 @@ This project is open-sourced and freely available for personal and educational u
 
 ## Contributing
 
-This Budget Tracker App is an open project, and contributions are welcome. If you have suggestions for improvement, bug reports, or would like to contribute code, please feel free to reach out or submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
+This Budget Tracker App is a project developed as part of a coursework requirement. While it is an open project and contributions are welcome, please note that contributions will only be accepted after the project has been graded and the course concluded. If you have suggestions for improvements, bug reports, or would like to contribute code, feel free to reach out or prepare a pull request. However, keep in mind that contributions will be reviewed and potentially merged post-course completion. For major changes, please open an issue first to discuss what you would like to change.
+
+This approach ensures that the project remains in line with the educational objectives while also allowing for community input and improvement over time. Thank you for your understanding and interest in contributing!
