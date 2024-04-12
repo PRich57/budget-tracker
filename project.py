@@ -208,15 +208,15 @@ def generate_report():
     net = income - expense
 
     report_data = [
-        [Fore.GREEN + 'Total Income' + Fore.CYAN, Fore.GREEN + f"${income:.2f}" + Fore.CYAN],
-        [Fore.RED + 'Total Expense' + Fore.CYAN, Fore.RED + f"${expense:.2f}" + Fore.CYAN],
-        ['Net', f"${net:.2f}"]
+        [Fore.GREEN + 'Total Income' + Fore.CYAN, Fore.GREEN + f"${income:,.2f}" + Fore.CYAN],
+        [Fore.RED + 'Total Expense' + Fore.CYAN, Fore.RED + f"${expense:,.2f}" + Fore.CYAN],
+        ['Net', f"${net:,.2f}"]
     ]
 
     # Conditional coloring for 'Net' based on its value
     net_color = Fore.GREEN if net > 0 else Fore.RED
     # Apply coloring to 'Net'
-    report_data[2] = [net_color + 'Net' + Fore.CYAN, net_color + f"${net:.2f}" + Fore.CYAN]
+    report_data[2] = [net_color + 'Net' + Fore.CYAN, net_color + f"${net:,.2f}" + Fore.CYAN]
     print(tabulate(report_data, tablefmt="grid"))
 
 
