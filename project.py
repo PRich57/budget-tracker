@@ -21,7 +21,7 @@ def main():
         elif choice == '5':
             generate_report()
         elif choice.lower() == 'q':
-            print(Fore.YELLOW + "\nExiting the budget tracker.")
+            print(Fore.YELLOW + "\nExiting the budget tracker.\n" + Fore.RESET)
             break
         else:
             print(Fore.RED + "\nInvalid choice. Please choose again.")
