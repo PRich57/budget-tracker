@@ -1,6 +1,6 @@
 # Budget Tracker
 
-#### Video Demo:
+#### Video Demo: https://youtu.be/teidFcXsgG0
 
 ## Description
 
