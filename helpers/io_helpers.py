@@ -1,29 +1,29 @@
 import json
+from pathlib import Path
 
 from colorama import Fore
-from typing import List, Dict, Any
 
 
-def load_transactions() -> List[Dict[str, Any]]:
+def load_transactions() -> list[dict]:
     # Load transactions from JSON file, return an empty list if file doesn't exist or is corrupted
     try:
-        with open('transactions.json', 'r') as file:
+        with Path('transactions.json').open('r') as file:
             return json.load(file)
     except FileNotFoundError:
-        print(Fore.YELLOW + "\nTransaction file not found. Starting with an empty list.\n" + Fore.CYAN)
+        print(f"{Fore.YELLOW}\nTransaction file not found. Starting with an empty list.\n{Fore.CYAN}")
         return []
     except json.JSONDecodeError:
-        print(Fore.RED + "\nTransaction file is corrupted. Starting with an empty list.\n" + Fore.CYAN)
+        print(f"{Fore.RED}\nTransaction file is corrupted. Starting with an empty list.\n{Fore.CYAN}")
         return []
     except Exception as e:
-        print(Fore.RED + f"\nAn error occurred while loading transactions: {e}\n" + Fore.CYAN)
+        print(f"{Fore.RED}\nAn error occurred while loading transactions: {e}\n{Fore.CYAN}")
         return []
 
 
-def save_transactions(transactions: List[Dict[str, Any]]) -> None:
+def save_transactions(transactions: list[dict]) -> None:
     # Save transactions to a JSON file
     try:
-        with open('transactions.json', 'w') as file:
+        with Path('transactions.json').open('w') as file:
             json.dump(transactions, file, indent=4)
     except Exception as e:
-        print(Fore.RED + f"\nAn error occurred while saving transactions: {e}\n" + Fore.CYAN)
+        print(f"{Fore.RED}\nAn error occurred while saving transactions: {e}\n{Fore.CYAN}")

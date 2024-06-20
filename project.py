@@ -1,6 +1,5 @@
 from colorama import Fore
 from tabulate import tabulate
-from typing import List, Dict, Any, Optional
 
 from helpers.io_helpers import load_transactions, save_transactions
 from helpers.validation_helpers import get_valid_date, get_valid_type, get_valid_amount
@@ -10,7 +9,7 @@ def main() -> None:
     # Main loop to display the menu and handle user input
     while True:
         display_menu()
-        choice: str = input("Enter your choice: ").strip()
+        choice = input("Enter your choice: ").strip()
         if choice == '1':
             handle_add_transaction()
         elif choice == '2':
@@ -22,15 +21,15 @@ def main() -> None:
         elif choice == '5':
             generate_report()
         elif choice.lower() == 'q':
-            print(Fore.YELLOW + "\nExiting the budget tracker.\n" + Fore.RESET)
+            print(f"{Fore.YELLOW}\nExiting the budget tracker.\n{Fore.RESET}")
             break
         else:
-            print(Fore.RED + "\nInvalid choice. Please choose again.")
+            print(f"{Fore.RED}\nInvalid choice. Please choose again.")
 
 
 def display_menu() -> None:
     # Display the user menu
-    print(Fore.CYAN + """
+    print(f"""{Fore.CYAN}
     Budget Tracker Menu:
     
         1 - Add Transaction
@@ -42,9 +41,8 @@ def display_menu() -> None:
     """)
 
 
-# Refactored for testing
-def add_transaction(transactions: List[Dict[str, Any]], date: str, description: str, type: str, amount: float) -> None:
-    transaction: Dict[str, Any] = {
+def add_transaction(transactions: list[dict], date: str, description: str, type: str, amount: float) -> None:
+    transaction = {
         'date': date,
         'description': description,
         'type': type,
@@ -53,52 +51,50 @@ def add_transaction(transactions: List[Dict[str, Any]], date: str, description: 
     transactions.append(transaction)
     transactions.sort(key=lambda x: x['date'])
     save_transactions(transactions)
-    print(Fore.GREEN + "\nTransaction added successfully.")
+    print(f"{Fore.GREEN}\nTransaction added successfully.")
 
 
-# Refactored for testing
 def handle_add_transaction() -> None:
-    transactions: List[Dict[str, Any]] = load_transactions()
-    date: str = get_valid_date()
-    description: str = input("Enter the transaction description: ")
-    type: str = get_valid_type()
-    amount: float = get_valid_amount()
+    transactions = load_transactions()
+    date = get_valid_date()
+    description = input("Enter the transaction description: ")
+    type = get_valid_type()
+    amount = get_valid_amount()
 
     add_transaction(transactions, date, description, type, amount)
 
 
 def view_transactions() -> None:
     # Display all transactions
-    transactions: List[Dict[str, Any]] = load_transactions()
-    table_data: List[List[str]] = []
+    transactions = load_transactions()
+    table_data = []
     # Check if there are any transactions to display
     if transactions:
         for i, transaction in enumerate(transactions, start=1):
             # Color code based on transaction type
-            color: str = Fore.RED if transaction['type'] == 'expense' else Fore.GREEN
+            color = Fore.RED if transaction['type'] == 'expense' else Fore.GREEN
             # Apply color to entire row
-            row: List[str] = [
-                color + f"{i}" + Fore.CYAN,
-                color + transaction['date'] + Fore.CYAN,
-                color + transaction['description'] + Fore.CYAN,
-                color + transaction['type'] + Fore.CYAN,
-                color + '${:,.2f}'.format(transaction['amount']) + Fore.CYAN
+            row = [
+                f"{color}{i}{Fore.CYAN}",
+                f"{color}{transaction['date']}{Fore.CYAN}",
+                f"{color}{transaction['description']}{Fore.CYAN}",
+                f"{color}{transaction['type']}{Fore.CYAN}",
+                f"{color}${transaction['amount']:,.2f}{Fore.CYAN}"
             ]
             # Append list of transaction details
             table_data.append(row)
         # Print with tabulate
-        print(Fore.CYAN + "\n" + tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
+        print(f"{Fore.CYAN}\n{tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt='grid')}")
     else:
         # print(Fore.RED + "\nNo transactions found.")
         print(tabulate(table_data, headers=['ID', 'Date', 'Description', 'Type', 'Amount'], tablefmt="grid"))
 
 
-# Refactored for testing
-def update_transaction(transactions: List[Dict[str, Any]], transaction_id: int,
-                       new_date: Optional[str] = None, new_description: Optional[str] = None,
-                       new_type: Optional[str] = None, new_amount: Optional[str] = None) -> bool:
+def update_transaction(transactions: list[dict], transaction_id: int,
+                       new_date: str | None = None, new_description: str | None = None,
+                       new_type: str | None = None, new_amount: float | None = None) -> bool:
     if not 0 <= transaction_id < len(transactions):
-        print(Fore.RED + "\nInvalid transaction ID.")
+        print(f"{Fore.RED}\nInvalid transaction ID.")
         return False
     
     if new_date:
@@ -112,114 +108,111 @@ def update_transaction(transactions: List[Dict[str, Any]], transaction_id: int,
 
     transactions.sort(key=lambda x: x['date'])
     save_transactions(transactions)
-    print(Fore.GREEN + "\nTransaction updated successfully.")
+    print(f"{Fore.GREEN}\nTransaction updated successfully.")
     return True
 
 
-# Refactored for testing
 def handle_update_transaction() -> None:
-    transactions: List[Dict[str, Any]] = load_transactions()
+    transactions = load_transactions()
     if not transactions:
-        print(Fore.RED + "\nNo transactions to update.")
+        print(f"{Fore.RED}\nNo transactions to update.")
         return
 
     view_transactions()
     # Prompt user for for transaction ID or option to return to main menu
-    transaction_id_str: str = input("\nEnter the ID of the transaction you wish to update, or 'q' to cancel: ").strip().lower()
+    transaction_id_str = input("\nEnter the ID of the transaction you wish to update, or 'q' to cancel: ").strip().lower()
     # Return to main menu if user enters 'q'
     if transaction_id_str.lower() == 'q':
-        print(Fore.YELLOW + "\nUpdate cancelled. Returning to the main menu.")
+        print(f"{Fore.YELLOW}\nUpdate cancelled. Returning to the main menu.")
         return
     
     # Validation
     if not transaction_id_str.isdigit() or not 1 <= int(transaction_id_str) <= len(transactions):
-        print(Fore.RED + "\nInvalid transaction ID.")
+        print(f"{Fore.RED}\nInvalid transaction ID.")
         return
 
     # Convert to int and account for change of indexing from 1 to 0
-    transaction_id: int = int(transaction_id_str) - 1
-    transaction_to_update: Dict[str, Any] = transactions[transaction_id]
+    transaction_id = int(transaction_id_str) - 1
+    transaction_to_update = transactions[transaction_id]
 
     # Give option to enter new date or keep existing
-    new_date: str = input(f"\nEnter new date (YYYY-MM-DD) or press enter to keep ({transaction_to_update['date']}): ").strip()
+    new_date = input(f"\nEnter new date (YYYY-MM-DD) or press enter to keep ({transaction_to_update['date']}): ").strip()
     transaction_to_update['date'] = get_valid_date(new_date) if new_date else transaction_to_update['date']
 
     # Give option to enter new description or keep existing
-    new_description: str = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ").strip()
+    new_description = input(f"Enter new description or press enter to keep ({transaction_to_update['description']}): ").strip()
     transaction_to_update['description'] = new_description if new_description else transaction_to_update['description']
     
     # Give option to enter new type or keep existing
-    new_type: str = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ").strip().lower()
+    new_type = input(f"Enter new type (income/expense) or press enter to keep ({transaction_to_update['type']}): ").strip().lower()
     transaction_to_update['type'] = get_valid_type(new_type) if new_type else transaction_to_update['type']
     
     # Give option to enter new amount or keep existing
-    new_amount_str: str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ").strip()
+    new_amount_str = input(f"Enter new amount or press enter to keep (${transaction_to_update['amount']:.2f}): ").strip()
     transaction_to_update['amount'] = get_valid_amount(new_amount_str) if new_amount_str else transaction_to_update['amount']
 
     # Call update_transaction function with provided values, new or old
     update_transaction(transactions, transaction_id, transaction_to_update['date'], transaction_to_update['description'], transaction_to_update['type'], transaction_to_update['amount'])
 
 
-# Refactored for testing
-def delete_transaction(transactions: List[Dict[str, Any]], transaction_id: int) -> bool:
+def delete_transaction(transactions: list[dict], transaction_id: int) -> bool:
     # Delete transaction with provided ID from the transactions list
     del transactions[transaction_id]
     # Save updated list
     save_transactions(transactions)
-    print(Fore.GREEN + "\nTransaction deleted successfully.")
+    print(f"{Fore.GREEN}\nTransaction deleted successfully.")
     return True
 
 
-# Refactored for testing
 def handle_delete_transaction() -> None:
-    transactions: List[Dict[str, Any]] = load_transactions()
+    transactions = load_transactions()
     if not transactions:
-        print(Fore.RED + "\nNo transactions to delete.")
+        print(f"{Fore.RED}\nNo transactions to delete.")
         return
 
     # Call view_transactions to show user the organized data
     view_transactions()
     # Prompt user for the ID of the transaction they wish to delete
-    transaction_id_str: str = input(Fore.CYAN + "\nEnter the ID of the transaction you wish to delete, or 'q' to cancel: ").strip().lower()
+    transaction_id_str = input(f"{Fore.CYAN}\nEnter the ID of the transaction you wish to delete, or 'q' to cancel: ").strip().lower()
 
     # Provide user with a way to return to the main menu
     if transaction_id_str.lower() == 'q':
-        print(Fore.YELLOW + "\nDeletion cancelled. Returning to the main menu.")
+        print(f"{Fore.YELLOW}\nDeletion cancelled. Returning to the main menu.")
         return
     
     # Send error message and return to main menu when invalid ID is provided
     if not transaction_id_str.isdigit() or not 1 <= int(transaction_id_str) <= len(transactions):
-        print(Fore.RED + "\nInvalid transaction ID.")
+        print(f"{Fore.RED}\nInvalid transaction ID.")
         return
     
     # Convert user provided transaction ID to an int and subtract 1 to align with 0 indexing
-    transaction_id: int = int(transaction_id_str) - 1
+    transaction_id = int(transaction_id_str) - 1
 
     # Confirm deletion with user
-    confirm: str = input(Fore.YELLOW + "\nAre you sure you want to delete this transaction? (y/n): ").strip().lower()
+    confirm = input(f"{Fore.YELLOW}\nAre you sure you want to delete this transaction? (y/n): ").strip().lower()
     if confirm == 'y':
         delete_transaction(transactions, transaction_id)
     else:
-        print(Fore.YELLOW + "\nDeletion cancelled.")
+        print(f"{Fore.YELLOW}\nDeletion cancelled.")
 
 
 def generate_report() -> None:
     # Generate and display report of total income, expenses, and net amount
-    transactions: List[Dict[str, Any]] = load_transactions()
-    income: float = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'income')
-    expense: float = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'expense')
-    net: float = income - expense
+    transactions = load_transactions()
+    income = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'income')
+    expense = sum(transaction['amount'] for transaction in transactions if transaction['type'] == 'expense')
+    net = income - expense
 
-    report_data: List[List[str]] = [
-        [Fore.GREEN + 'Total Income' + Fore.CYAN, Fore.GREEN + f"${income:,.2f}" + Fore.CYAN],
-        [Fore.RED + 'Total Expense' + Fore.CYAN, Fore.RED + f"${expense:,.2f}" + Fore.CYAN],
+    report_data = [
+        [f"{Fore.GREEN}Total Income{Fore.CYAN}", f"{Fore.GREEN}${income:,.2f}{Fore.CYAN}"],
+        [f"{Fore.RED}Total Expense{Fore.CYAN}", f"{Fore.RED}${expense:,.2f}{Fore.CYAN}"],
         ['Net', f"${net:,.2f}"]
     ]
 
     # Conditional coloring for 'Net' based on its value
-    net_color: str = Fore.GREEN if net > 0 else Fore.RED
+    net_color = Fore.GREEN if net > 0 else Fore.RED
     # Apply coloring to 'Net'
-    report_data[2] = [net_color + 'Net' + Fore.CYAN, net_color + f"${net:,.2f}" + Fore.CYAN]
+    report_data[2] = [f"{net_color}Net{Fore.CYAN}", f"{net_color}${net:,.2f}{Fore.CYAN}"]
     print(tabulate(report_data, tablefmt="grid"))
 
 
