@@ -1,9 +1,10 @@
 import json
 
 from colorama import Fore
+from typing import List, Dict, Any
 
 
-def load_transactions():
+def load_transactions() -> List[Dict[str, Any]]:
     # Load transactions from JSON file, return an empty list if file doesn't exist or is corrupted
     try:
         with open('transactions.json', 'r') as file:
@@ -19,7 +20,7 @@ def load_transactions():
         return []
 
 
-def save_transactions(transactions):
+def save_transactions(transactions: List[Dict[str, Any]]) -> None:
     # Save transactions to a JSON file
     try:
         with open('transactions.json', 'w') as file:
